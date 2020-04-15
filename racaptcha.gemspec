@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["wangrui"]
   spec.email         = ["402399938@qq.com"]
 
-  spec.summary       = %q{This is a Captcha gem for ruby. It drawing captcha image with C code so it no dependencies.}
+  spec.summary       = %q{This is a Captcha gem for ruby. }
   spec.description   = %q{This is a Captcha gem for ruby. It drawing captcha image with C code so it no dependencies.}
   spec.homepage      = "https://github.com/wangrui438/racaptcha"
   spec.license       = "MIT"
@@ -38,9 +38,6 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 2.0.0"
   spec.extensions            = %w[ext/racaptcha/extconf.rb]
 
-  spec.add_dependency "activesupport", ">= 5.0"
-
-  spec.add_development_dependency "bundler", "~> 2.0"
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_runtime_dependency 'activesupport', '>= 5.0'
   spec.add_development_dependency 'rake-compiler', '~> 1'
 end
