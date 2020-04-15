@@ -1,0 +1,13 @@
+/.bundle/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+.DS_Store
+*.bundle
+*.o
+ext/racaptcha/Makefile
+ext/racaptcha/*.gif
