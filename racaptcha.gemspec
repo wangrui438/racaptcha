@@ -5,7 +5,7 @@ require "racaptcha/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "racaptcha"
-  spec.version       = Racaptcha::VERSION
+  spec.version       = RaCaptcha::VERSION
   spec.authors       = ["wangrui"]
   spec.email         = ["402399938@qq.com"]
 
