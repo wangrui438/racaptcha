@@ -15,5 +15,25 @@ module RaCaptcha
     attr_accessor :outline
     # skip_cache_store_check, default: false
     attr_accessor :skip_cache_store_check
+
+    def initialize
+      @cache_store            = :file_store
+      @expires_in             = 2.minutes
+      @style                  = :colorful
+      @length                 = 5
+      @strikethrough          = true
+      @outline                = false
+      @skip_cache_store_check = false
+    end
+  end
+
+  class << self
+    def setup
+      yield config
+    end
+
+    def config
+      @config ||= Configuration.new
+    end
   end
 end

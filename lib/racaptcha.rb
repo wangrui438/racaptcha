@@ -1,35 +1,16 @@
 require "active_support/all"
-require "racaptcha/racaptcha"
-require "racaptcha/version"
 require "racaptcha/configuration"
+require "racaptcha/version"
 require "racaptcha/errors/configuration"
+require "racaptcha/racaptcha"
 
 module RaCaptcha
   class << self
-    def config
-      return @config if defined?(@config)
-
-      @config = Configuration.new
-      @config.style         = :colorful
-      @config.length        = 5
-      @config.strikethrough = true
-      @config.outline       = false
-      @config.expires_in    = 2.minutes
-      @config.skip_cache_store_check = false
-
-      @config.cache_store = :file_store
-      @config.cache_store
-      @config
-    end
-
-    def setup(&block)
-      config.instance_exec(&block)
-    end
 
     def cache
       return @cache if defined? @cache
 
-      @cache = ActiveSupport::Cache.lookup_store(RaCaptcha.config.cache_store)
+      @cache = ActiveSupport::Cache.lookup_store(config.cache_store)
       @cache
     end
 
@@ -49,12 +30,12 @@ module RaCaptcha
 
     # generate new captcha with cache
     def generate_captcha(cache_key = nil)
-      res = RaCaptcha.generate
+      res = generate
       _val = {
         code: res[0],
         time: Time.now.to_i
       }
-      RaCaptcha.cache.write(generate_cache_key(cache_key), _val, expires_in: RaCaptcha.config.expires_in)
+      cache.write(generate_cache_key(cache_key), _val, expires_in: config.expires_in)
       res[1]
     end
 
@@ -69,15 +50,15 @@ module RaCaptcha
       options ||= {}
 
       _key = generate_cache_key(options[:cache_key])
-      store_info = RaCaptcha.cache.read(_key)
+      store_info = cache.read(_key)
       # Make sure move used key
-      RaCaptcha.cache.delete(_key) unless options[:keep_cache]
+      cache.delete(_key) unless options[:keep_cache]
 
       # Make sure session exist
       return false if store_info.blank?
 
       # Make sure not expire
-      return false if (Time.now.to_i - store_info[:time]) > RaCaptcha.config.expires_in
+      return false if (Time.now.to_i - store_info[:time]) > config.expires_in
 
       # Make sure have captcha
       captcha = (options[:captcha] || "").downcase.strip
